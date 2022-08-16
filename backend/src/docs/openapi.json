@@ -1,0 +1,148 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Challenge",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "/api/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "persona",
+      "description": "Todo lo relacionado a personas"
+    }
+  ],
+  "paths": {
+    "/person": {
+      "get": {
+        "tags": [
+          "persona"
+        ],
+        "summary": "Devuelve el listado de personas según los filtros",
+        "parameters": [
+          {
+            "name": "key",
+            "in": "query",
+            "description": "Propiedad del esquema que sea filtrable",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Entity"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "persona"
+        ],
+        "summary": "Agrega una persona nueva al sistema",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Entity"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Entity"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud inválida"
+          }
+        }
+      }
+    },
+    "/person/schema": {
+      "get": {
+        "tags": [
+          "persona"
+        ],
+        "summary": "Devuelve el esquema de la entidad Persona",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Schema"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Schema": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "string",
+                  "date"
+                ]
+              },
+              "displayText": {
+                "type": "string"
+              },
+              "required": {
+                "type": "boolean"
+              },
+              "filterable": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      },
+      "Entity": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string",
+                "format": "date",
+                "example": "2020-04-12T00:00:00"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
